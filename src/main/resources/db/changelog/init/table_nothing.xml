@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+	<changeSet author="tudor.codrea" id="add_nothing" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="nothing" />
+			</not>
+		</preConditions>
+		<createTable tableName="nothing">
+			<column autoIncrement="true" name="id" remarks="nothing" type="SERIAL">
+				<constraints primaryKey="true" primaryKeyName="nothing_pkey" />
+			</column>
+
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false" unique="true"	uniqueConstraintName="nothing_name_column_uk" />
+			</column>
+			
+			<column name="description" type="VARCHAR(255)"/>
+			<column name="some_number" type="integer"/>
+			
+			<column name="is_active" type="BOOLEAN" defaultValueBoolean="false">
+            	<constraints nullable="false"/>
+            </column> 
+            
+			<column name="created_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_by" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="numeric(10)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+</databaseChangeLog>

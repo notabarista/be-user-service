@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+ 
+  <changeSet author="tudor.codrea" id="add_user_proile" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not> 
+            	<tableExists tableName="user_profile" /> 
+            </not>
+        </preConditions>
+        <createTable tableName="user_profile">
+            <column autoIncrement="true" name="id" remarks="user_profile" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="user_profile_pkey"/>
+            </column>      
+            
+            <column name="user_id" type="integer">
+				<constraints nullable="false" foreignKeyName="user_profile_user_id_fk" references="user(id)"/>
+			</column>
+                              
+            <column name="favorite_coffee_type" type="VARCHAR(255)" >
+            </column> 
+            <column name="favorite_roasting_type" type="VARCHAR(255)" >
+            </column> 
+            <column name="favorite_brand" type="VARCHAR(255)" >
+            </column> 
+            <column name="avatar" type="VARCHAR(255)" >
+            </column> 
+            <column name="rating" type="integer" >
+            </column> 
+            <column name="last" type="VARCHAR(255)" >
+            </column> 
+            
+            <column name="created_at" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified_at" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_by" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="modified_by" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="version" type="numeric(10)">
+				<constraints nullable="false"/>
+			</column>
+        </createTable>
+    </changeSet>        
+    
+</databaseChangeLog>

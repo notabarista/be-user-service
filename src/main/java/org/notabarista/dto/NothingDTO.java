@@ -2,20 +2,20 @@ package org.notabarista.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@ToString(exclude = {  })
+@ToString(callSuper = true, exclude = {  })
 @EqualsAndHashCode(callSuper = false, exclude = { })
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @ApiModel
 public class NothingDTO extends AbstractAuditedDTO {
 

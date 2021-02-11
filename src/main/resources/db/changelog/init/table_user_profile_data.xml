@@ -5,25 +5,27 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
  
-  <changeSet author="tudor.codrea" id="add_user_type" runOnChange="true">
+  <changeSet author="tudor.codrea" id="create_user_profile_data" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not> 
-            	<tableExists tableName="user_type" /> 
+            	<tableExists tableName="user_profile_data" /> 
             </not>
         </preConditions>
-        <createTable tableName="user_type">
-            <column autoIncrement="true" name="id" remarks="user_type" type="SERIAL">
-                <constraints primaryKey="true" primaryKeyName="user_type_pkey"/>
-            </column>       
-            <column name="name" type="VARCHAR(255)">
-            	<constraints nullable="false" unique="true" uniqueConstraintName="user_type_name_column_uk"/>
-            </column> 
-            <column name="description" type="VARCHAR(255)"/>
+        <createTable tableName="user_profile_data">
+            <column autoIncrement="true" name="id" remarks="user_profile" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="user_profile_data_pkey"/>
+            </column>      
             
-            <column name="is_active" type="BOOLEAN" defaultValueBoolean="false">
-            	<constraints nullable="false"/>
+            <column name="user_profile_id" type="integer">
+				<constraints nullable="false" foreignKeyName="user_profile_id_fk" references="user_profile(id)"/>
+			</column>
+                              
+ 			<column name="key" type="VARCHAR(255)" >
+ 				<constraints nullable="false"/>
             </column> 
-
+            <column name="data" type="VARCHAR(255)" >
+            </column> 
+                        
             <column name="created_at" type="datetime">
 				<constraints nullable="false"/>
 			</column>
@@ -40,6 +42,17 @@
 				<constraints nullable="false"/>
 			</column>
         </createTable>
-    </changeSet>        
+    </changeSet>
+    
+    <changeSet author="tudor.codrea" id="add_user_profile_data_uk">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists indexName="user_profile_data_uk" />
+			</not>
+		</preConditions>
+		<addUniqueConstraint
+			constraintName="user_profile_data_uk" tableName="user_profile_data"
+			columnNames="user_profile_id,key" />
+	</changeSet>        
     
 </databaseChangeLog>

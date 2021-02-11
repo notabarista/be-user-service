@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
  
-  <changeSet author="tudor.codrea" id="add_user_proile" runOnChange="true">
+  <changeSet author="tudor.codrea" id="create_user_profile" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not> 
             	<tableExists tableName="user_profile" /> 
@@ -19,18 +19,12 @@
             <column name="user_id" type="integer">
 				<constraints nullable="false" foreignKeyName="user_profile_user_id_fk" references="user(id)"/>
 			</column>
-                              
-            <column name="favorite_coffee_type" type="VARCHAR(255)" >
-            </column> 
-            <column name="favorite_roasting_type" type="VARCHAR(255)" >
-            </column> 
-            <column name="favorite_brand" type="VARCHAR(255)" >
-            </column> 
+			
+			<column name="phone_number" type="VARCHAR(255)">
+				<constraints nullable="false" unique="true"	uniqueConstraintName="user_profile_phone_column_uk" />
+            </column>
+        
             <column name="avatar" type="VARCHAR(255)" >
-            </column> 
-            <column name="rating" type="integer" >
-            </column> 
-            <column name="last" type="VARCHAR(255)" >
             </column> 
             
             <column name="created_at" type="datetime">

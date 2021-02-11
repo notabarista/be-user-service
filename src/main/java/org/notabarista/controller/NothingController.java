@@ -5,6 +5,7 @@ import com.okta.sdk.resource.user.User;
 import org.notabarista.controller.abstr.AbstractDeleteController;
 import org.notabarista.dto.NothingDTO;
 import org.notabarista.entity.NothingEntity;
+import org.notabarista.entity.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -52,6 +53,12 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
         }
 
         return sb.toString();
+    }
+    
+    @GetMapping("/special")
+    public Response<String> getSpecial() {
+    	
+    	return null;
     }
 
 }

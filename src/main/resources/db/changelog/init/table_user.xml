@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
  
-  <changeSet author="tudor.codrea" id="add_user" runOnChange="true">
+  <changeSet author="tudor.codrea" id="create_user" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not> 
             	<tableExists tableName="user" /> 
@@ -14,25 +14,26 @@
         <createTable tableName="user">
             <column autoIncrement="true" name="id" remarks="user" type="SERIAL">
                 <constraints primaryKey="true" primaryKeyName="user_pkey"/>
-            </column> 
-            <column name="username" type="VARCHAR(255)">
-            	<constraints nullable="false" unique="true" uniqueConstraintName="user_username_column_uk"/>
-            </column>                        
+            </column>
+            
+            <column name="user_identifier" type="VARCHAR(255)">
+            	<constraints nullable="false" unique="true" uniqueConstraintName="user_identifier_column_uk"/>
+            </column>
+            
             <column name="email" type="VARCHAR(255)">
             	<constraints nullable="false" unique="true" uniqueConstraintName="user_email_column_uk"/>
-            </column> 
+            </column>           
+            
+            <column name="username" type="VARCHAR(255)">
+            	<constraints nullable="false" unique="true" uniqueConstraintName="user_username_column_uk"/>
+            </column>
             <column name="first_name" type="VARCHAR(255)">
             	<constraints nullable="false" />
             </column> 
             <column name="last_name" type="VARCHAR(255)">
             	<constraints nullable="false" />
             </column> 
-            <column name="phone_number" type="VARCHAR(255)">
-            	<constraints nullable="false" unique="true" uniqueConstraintName="user_phone_column_uk"/>
-            </column>
-            <column name="is_active" type="BOOLEAN" defaultValueBoolean="false">
-            	<constraints nullable="false"/>
-            </column> 
+
             <column name="created_at" type="datetime">
 				<constraints nullable="false"/>
 			</column>

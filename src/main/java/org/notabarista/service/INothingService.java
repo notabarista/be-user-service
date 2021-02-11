@@ -1,5 +1,9 @@
 package org.notabarista.service;
 
-public interface INothingService {
+import org.notabarista.dto.NothingDTO;
+import org.notabarista.entity.NothingEntity;
+import org.notabarista.service.abstr.IBaseService;
+
+public interface INothingService extends IBaseService<NothingEntity, NothingDTO> {
 
 }

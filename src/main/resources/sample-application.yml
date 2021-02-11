@@ -19,7 +19,7 @@ spring:
     change-log: classpath:/db/changelog/changelog-master.xml
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postresql.com:5432/db-name
+    url: jdbc:postgresql://postresql.com:5432/db-name?currentSchema=xxx
     username: 
     password: 
     hikari:
@@ -30,11 +30,17 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
+        default_schema: xxx
         format_sql: true
         enable_lazy_load_no_trans: true
         jdbc:
           lob:
             non_contextual_creation: true
+
+okta:
+  client:
+    orgUrl: https://dev-xxxxxx.okta.com
+    token: Okta-generated-API-token
     
 eureka:
   client:
@@ -75,9 +81,7 @@ logging:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
     file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
   level:
-    root: debug
-
-okta:
-  client:
-    orgUrl: https://dev-xxxxxx.okta.com
-    token: Okta-generated-API-token
+    root: info
+    org.springframework: warn
+    org.hibernate: debug
+    org.notabarista: trace

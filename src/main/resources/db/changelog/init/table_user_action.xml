@@ -6,22 +6,31 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-	<changeSet author="tudor.codrea" id="add_role" runOnChange="true">
+	<changeSet author="tudor.codrea" id="create_user_action" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="role" />
+				<tableExists tableName="user_action" />
 			</not>
 		</preConditions>
-		<createTable tableName="role">
-			<column autoIncrement="true" name="id" remarks="role" type="SERIAL">
-				<constraints primaryKey="true" primaryKeyName="role_pkey" />
+		<createTable tableName="user_action">
+			<column autoIncrement="true" name="id" remarks="user_action" type="SERIAL">
+				<constraints primaryKey="true" primaryKeyName="user_action_pkey" />
 			</column>
 
 			<column name="name" type="VARCHAR(255)">
-				<constraints nullable="false" unique="true"	uniqueConstraintName="role_name_column_uk" />
+				<constraints nullable="false" />
 			</column>
-			
-			<column name="description" type="VARCHAR(255)"/>
+
+			<column name="service_name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column> 
+			<column name="path" type="VARCHAR(255)">
+				<constraints nullable="false" /> 
+			</column>
+			<column name="action" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column> 
+			<column name="description" type="text" />
 
 			<column name="created_at" type="datetime">
 				<constraints nullable="false" />
@@ -39,6 +48,17 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+	</changeSet>
+
+	<changeSet author="tudor.codrea" id="add_user_action_path_action_uk">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists indexName="user_action_path_action_uk" />
+			</not>
+		</preConditions>
+		<addUniqueConstraint
+			constraintName="user_action_path_action_uk" tableName="user_action"
+			columnNames="path,action" />
 	</changeSet>
 
 </databaseChangeLog>

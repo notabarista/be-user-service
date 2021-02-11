@@ -1,47 +1,44 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
-	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet author="tudor.codrea" id="user_role" runOnChange="true">
-    	<preConditions onFail="MARK_RAN">
-            <not> 
-            	<tableExists tableName="user_role" /> 
-            </not>
-        </preConditions>
-        <createTable tableName="user_role">
-            <column name="user_id" type="INTEGER"/>
-            <column name="role_id" type="INTEGER"/>
-        </createTable>        
-    </changeSet>    
-    
-    <changeSet author="tudor.codrea" id="user_role_role_fk">
-    	<preConditions onFail="MARK_RAN">
-			<not>
-				<foreignKeyConstraintExists foreignKeyName="user_role_role_fk" />
-			</not>
-		</preConditions>
-        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="user_role_role_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role" validate="true"/>
-    </changeSet>
-    <changeSet author="tudor.codrea" id="user_role_user_fk">
-    	<preConditions onFail="MARK_RAN">
-			<not>
-				<foreignKeyConstraintExists foreignKeyName="user_role_user_fk" />
-			</not>
-		</preConditions>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="user_role_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
-    </changeSet>
-    
-    <changeSet author="tudor.codrea" id="user_role_uk" runOnChange="true">
+	<changeSet author="tudor.codrea" id="add_user_role" runOnChange="true">
 		<preConditions onFail="MARK_RAN">
-			<not> <indexExists indexName="user_role_uk" /> </not>
+			<not>
+				<tableExists tableName="user_role" />
+			</not>
 		</preConditions>
-		<addUniqueConstraint
-			constraintName="user_role_uk"
-			tableName="user_role"
-			columnNames="user_id,role_id"/>
+		<createTable tableName="user_role">
+			<column autoIncrement="true" name="id" remarks="user_role" type="SERIAL">
+				<constraints primaryKey="true" primaryKeyName="user_role_pkey" />
+			</column>
+
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false" unique="true"	uniqueConstraintName="role_name_column_uk" />
+			</column>
+			
+			<column name="description" type="VARCHAR(255)"/>
+
+			<column name="created_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_by" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="numeric(10)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
 	</changeSet>
 
 </databaseChangeLog>

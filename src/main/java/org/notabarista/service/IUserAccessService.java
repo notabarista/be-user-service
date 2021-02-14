@@ -1,16 +1,17 @@
 package org.notabarista.service;
 
-import java.util.List;
-
-import org.notabarista.entity.UserActionEntity;
+import org.notabarista.dto.UserActionDTO;
 import org.notabarista.exception.AbstractNotabaristaException;
+
+import java.util.List;
+import java.util.Set;
 
 public interface IUserAccessService {
 
 
-	<T> Boolean canAccess(String userId, String actionName, Class<T> clazz, List<T> entities) throws AbstractNotabaristaException;
+	<T> Boolean canAccess(String userId, String actionName, String action, Class<T> clazz, List<T> entities) throws AbstractNotabaristaException;
 
-	List<UserActionEntity> getAllActionsForRoles(List<String> roleList, String modelName, String actionName, String userName)
+	Set<UserActionDTO> getAllActionsForRoles(List<String> roleList, String modelName, String actionName, String userName)
 			throws AbstractNotabaristaException;
 
 	

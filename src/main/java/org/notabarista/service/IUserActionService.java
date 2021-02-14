@@ -6,4 +6,6 @@ import org.notabarista.service.abstr.IBaseService;
 
 public interface IUserActionService extends IBaseService<UserActionEntity, UserActionDTO> {
 
+
+
 }

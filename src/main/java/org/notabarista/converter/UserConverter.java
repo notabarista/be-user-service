@@ -23,8 +23,8 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 				.email(dto.getEmail())
 				.firstName(dto.getFirstName())
 				.lastName(dto.getLastName())
-				
-				.userProfile(userProfileConverter.createFrom(dto.getUserProfile()))
+
+				.userProfile(null != dto.getUserProfile() ? userProfileConverter.createFrom(dto.getUserProfile()) : null)
 				.userRoles(userRoleConverter.createFromDtos(dto.getUserRoles()))
 
 				.createdAt(dto.getCreatedAt())
@@ -46,7 +46,7 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 				.firstName(entity.getFirstName())
 				.lastName(entity.getLastName())
 				
-				.userProfile(userProfileConverter.createFrom(entity.getUserProfile()))
+				.userProfile(null != entity.getUserProfile() ? userProfileConverter.createFrom(entity.getUserProfile()) : null)
 				.userRoles(userRoleConverter.createFromEntities(entity.getUserRoles()))
 				
 				.createdAt(entity.getCreatedAt())

@@ -65,15 +65,11 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
     }
 
     @GetMapping("/special")
-    public ResponseEntity<String> getSpecial(@RequestHeader("uid") String userId) {
+    public ResponseEntity<String> getSpecial(@RequestHeader("uid") String userId) throws AbstractNotabaristaException {
         ResponseEntity<String> stringResponseEntity = new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        try {
-            // TODO what is clazz and entities used for?
-            if (userAccessService.canAccess(userId, "nothing-special", "read", this.getClass(), new ArrayList<>())) {
-                return new ResponseEntity<>("Special content", HttpStatus.OK);
-            }
-        } catch (AbstractNotabaristaException e) {
-            log.error(e);
+        // TODO what is clazz and entities used for?
+        if (userAccessService.canAccess(userId, "nothing-special", "read", this.getClass(), new ArrayList<>())) {
+            return new ResponseEntity<>("Special content", HttpStatus.OK);
         }
 
         return stringResponseEntity;

@@ -33,20 +33,4 @@ public class UserService extends AbstractDeleteService<UserEntity, UserDTO> impl
 		return Optional.ofNullable(userDto);
 	}
 
-	@Override
-	public Optional<UserDTO> createUser(UserDTO userDTO) {
-		UserDTO userDto = null;
-		if (null != userDTO) {
-			Optional<UserEntity> userEntityOpt = userRepository.findByUserIdentifier(userDTO.getUserIdentifier());
-			if (!userEntityOpt.isPresent()) {
-				UserEntity userEntity = userConverter.createFrom(userDTO);
-				UserEntity savedUserEntity = userRepository.save(userEntity);
-				// TODO add checks
-				userDto = userConverter.createFrom(savedUserEntity);
-			}
-		}
-
-		return Optional.ofNullable(userDto);
-	}
-
 }

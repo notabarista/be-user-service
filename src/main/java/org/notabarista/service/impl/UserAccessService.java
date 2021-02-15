@@ -58,7 +58,7 @@ public class UserAccessService implements IUserAccessService {
 		Optional<UserDTO> user = usersService.findByUserIdentifier(userIdentifier);
 		
 		if (!user.isPresent()) {
-			user = processNewUser(userIdentifier);
+			user = Optional.of(processNewUser(userIdentifier));
 		}
 
 		if (log.isDebugEnabled()) {
@@ -83,7 +83,7 @@ public class UserAccessService implements IUserAccessService {
 		return true;
 	}
 
-	private Optional<UserDTO> processNewUser(String userIdentifier) {
+	private UserDTO processNewUser(String userIdentifier) throws AbstractNotabaristaException {
 		log.info("Processing new user id: '" + userIdentifier + "'");
 
 		// get user info from Okta
@@ -103,9 +103,14 @@ public class UserAccessService implements IUserAccessService {
 								 .createdBy("system")
 								 .modifiedBy("system")
 								 .build();
-		Optional<UserDTO> user = usersService.createUser(userDTO);
+		UserDTO user = null;
+		try {
+			user = usersService.insert(userDTO);
+		} catch (Exception e) {
+			throw new AbstractNotabaristaException("Error creating new user: " + e.getMessage());
+		}
 
-		log.info("Processed new user id: '" + userIdentifier + "': " + user.get());
+		log.info("Processed new user id: '" + userIdentifier + "': " + user);
 
 		return user;
 	}

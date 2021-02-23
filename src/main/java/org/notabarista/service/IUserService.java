@@ -1,13 +1,14 @@
 package org.notabarista.service;
 
-import java.util.Optional;
-
 import org.notabarista.dto.UserDTO;
 import org.notabarista.entity.UserEntity;
 import org.notabarista.service.abstr.IBaseService;
+import org.notabarista.service.abstr.IDeleteService;
 
-public interface IUserService extends IBaseService<UserEntity, UserDTO> {
+import java.util.Optional;
 
-	public Optional<UserDTO> findByUserIdentifier(String userIdentifier);
+public interface IUserService extends IDeleteService<UserEntity, UserDTO> {
+
+	Optional<UserDTO> findByUserIdentifier(String userIdentifier);
 	
 }

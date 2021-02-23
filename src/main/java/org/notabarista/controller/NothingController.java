@@ -2,21 +2,30 @@ package org.notabarista.controller;
 
 import com.okta.sdk.client.Client;
 import com.okta.sdk.resource.user.User;
+import lombok.extern.log4j.Log4j2;
 import org.notabarista.controller.abstr.AbstractDeleteController;
 import org.notabarista.dto.NothingDTO;
 import org.notabarista.entity.NothingEntity;
-import org.notabarista.entity.response.Response;
+import org.notabarista.exception.AbstractNotabaristaException;
+import org.notabarista.service.IUserAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Map;
 
+@Log4j2
 @RestController
 @RequestMapping("/nothing")
 public class NothingController extends AbstractDeleteController<NothingEntity, NothingDTO> {
+
+    @Autowired
+    private IUserAccessService userAccessService;
 
     @Autowired
     public Client client;
@@ -54,11 +63,16 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
 
         return sb.toString();
     }
-    
+
     @GetMapping("/special")
-    public Response<String> getSpecial() {
-    	
-    	return null;
+    public ResponseEntity<String> getSpecial(@RequestHeader("uid") String userId) throws AbstractNotabaristaException {
+        ResponseEntity<String> stringResponseEntity = new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        // TODO what is clazz and entities used for?
+        if (userAccessService.canAccess(userId, "nothing-special", "read", this.getClass(), new ArrayList<>())) {
+            return new ResponseEntity<>("Special content", HttpStatus.OK);
+        }
+
+        return stringResponseEntity;
     }
 
 }

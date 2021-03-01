@@ -13,8 +13,8 @@
 			</not>
 		</preConditions>
 		<createTable tableName="user_role">
-			<column autoIncrement="true" name="id" remarks="user_role" type="SERIAL">
-				<constraints primaryKey="true" primaryKeyName="user_role_pkey" />
+			<column name="id" remarks="user_role" type="UUID">
+				<constraints primaryKey="true" primaryKeyName="user_role_id_pk" />
 			</column>
 
 			<column name="name" type="VARCHAR(255)">

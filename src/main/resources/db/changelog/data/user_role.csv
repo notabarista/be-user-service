@@ -1,0 +1,5 @@
+id,name,description,created_at,modified_at,created_by,modified_by,version
+df5d7a7a-782c-11eb-9439-0242ac130002,sysadmin,sysadmin,2021-02-11 03:45:31.000000,2021-02-11 03:45:32.000000,system,system,0
+df5d7a7a-782c-11eb-9439-0242ac130003,superadmin,superadmin,2021-02-26 13:33:11.000000,2021-02-26 13:33:12.000000,system,system,0
+df5d7a7a-782c-11eb-9439-0242ac130004,customer,customer,2021-02-26 13:35:00.000000,2021-02-26 13:35:09.000000,system,system,0
+df5d7a7a-782c-11eb-9439-0242ac130005,business,business,2021-02-26 13:35:33.000000,2021-02-26 13:35:35.000000,system,system,0

@@ -12,8 +12,8 @@
             </not>
         </preConditions>
         <createTable tableName="user">
-            <column autoIncrement="true" name="id" remarks="user" type="SERIAL">
-                <constraints primaryKey="true" primaryKeyName="user_pkey"/>
+            <column name="id" remarks="user" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="user_id_pk"/>
             </column>
             
             <column name="user_identifier" type="VARCHAR(255)">

@@ -12,11 +12,11 @@
             </not>
         </preConditions>
         <createTable tableName="user_profile">
-            <column autoIncrement="true" name="id" remarks="user_profile" type="SERIAL">
-                <constraints primaryKey="true" primaryKeyName="user_profile_pkey"/>
+            <column name="id" remarks="user_profile" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="user_profile_id_pk"/>
             </column>      
             
-            <column name="user_id" type="integer">
+            <column name="user_id" type="UUID">
 				<constraints nullable="false" foreignKeyName="user_profile_user_id_fk" references="user(id)"/>
 			</column>
 			

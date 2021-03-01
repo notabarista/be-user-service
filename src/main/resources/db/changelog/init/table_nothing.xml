@@ -13,8 +13,8 @@
 			</not>
 		</preConditions>
 		<createTable tableName="nothing">
-			<column autoIncrement="true" name="id" remarks="nothing" type="SERIAL">
-				<constraints primaryKey="true" primaryKeyName="nothing_pkey" />
+			<column name="id" remarks="nothing" type="UUID">
+				<constraints primaryKey="true" primaryKeyName="nothing_id_pk" />
 			</column>
 
 			<column name="name" type="VARCHAR(255)">

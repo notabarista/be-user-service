@@ -8,12 +8,8 @@ import java.util.Set;
 
 public interface IUserAccessService {
 
+	<T> Boolean canAccess(String userIdentifier, String action, Class<T> entity) throws AbstractNotabaristaException;
 
-	<T> Boolean canAccess(String userId, String actionName, String action, Class<T> clazz, List<T> entities) throws AbstractNotabaristaException;
+	Set<UserActionDTO> getAllActionsForRoles(List<String> roleList) throws AbstractNotabaristaException;
 
-	Set<UserActionDTO> getAllActionsForRoles(List<String> roleList, String modelName, String actionName, String userName)
-			throws AbstractNotabaristaException;
-
-	
-	
 }

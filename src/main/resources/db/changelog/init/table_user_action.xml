@@ -13,8 +13,8 @@
 			</not>
 		</preConditions>
 		<createTable tableName="user_action">
-			<column autoIncrement="true" name="id" remarks="user_action" type="SERIAL">
-				<constraints primaryKey="true" primaryKeyName="user_action_pkey" />
+			<column name="id" remarks="user_action" type="UUID">
+				<constraints primaryKey="true" primaryKeyName="user_action_id_pk" />
 			</column>
 
 			<column name="name" type="VARCHAR(255)">
@@ -29,7 +29,10 @@
 			</column>
 			<column name="action" type="VARCHAR(255)">
 				<constraints nullable="false" />
-			</column> 
+			</column>
+			<column name="entity_name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
 			<column name="description" type="text" />
 
 			<column name="created_at" type="datetime">
@@ -48,6 +51,17 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+	</changeSet>
+	
+	<changeSet author="tudor.codrea" id="add_user_action_service_action_entity_uk">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists indexName="user_action_service_action_entity_uk" />
+			</not>
+		</preConditions>
+		<addUniqueConstraint
+			constraintName="user_action_service_action_entity_uk" tableName="user_action"
+			columnNames="service_name,action,entity_name" />
 	</changeSet>
 
 	<changeSet author="tudor.codrea" id="add_user_action_path_action_uk">

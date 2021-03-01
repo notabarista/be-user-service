@@ -15,6 +15,7 @@ public class UserActionConverter implements GenericConverter<UserActionEntity, U
 				.serviceName(dto.getServiceName())
 				.path(dto.getPath())
 				.action(dto.getAction())
+				.entityName(dto.getEntityName())
 				.description(dto.getDescription())
 				
 				.createdAt(dto.getCreatedAt())
@@ -34,6 +35,7 @@ public class UserActionConverter implements GenericConverter<UserActionEntity, U
 				.serviceName(entity.getServiceName())
 				.path(entity.getPath())
 				.action(entity.getAction())
+				.entityName(entity.getEntityName())
 				.description(entity.getDescription())
 				
 				.createdAt(entity.getCreatedAt())

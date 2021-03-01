@@ -1,10 +1,18 @@
 package org.notabarista.service.impl;
 
-import com.okta.sdk.client.Client;
-import com.okta.sdk.resource.user.User;
-import lombok.extern.log4j.Log4j2;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.notabarista.dto.UserActionDTO;
 import org.notabarista.dto.UserDTO;
+import org.notabarista.dto.UserProfileDTO;
 import org.notabarista.dto.UserRoleDTO;
 import org.notabarista.exception.AbstractNotabaristaException;
 import org.notabarista.service.IUserAccessService;
@@ -13,9 +21,10 @@ import org.notabarista.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.okta.sdk.client.Client;
+import com.okta.sdk.resource.user.User;
+
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
@@ -31,15 +40,32 @@ public class UserAccessService implements IUserAccessService {
 	public Client client;
 	
 	@Override
-	public <T> Boolean canAccess(String userId, String actionName, String action, Class<T> clazz, List<T> entities) throws AbstractNotabaristaException {
+	public <T> Boolean canAccess(String userIdentifier, String action, Class<T> entity) throws AbstractNotabaristaException {
 			
-		return checkAccess(userId, actionName, action, clazz);
+		Optional<UserDTO> user = usersService.findByUserIdentifier(userIdentifier);
+		
+		if (!user.isPresent()) {
+			user = Optional.of(processNewUser(userIdentifier));
+		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("canAccess user id:" + user.get().getId() + "User identifier:" + user.get().getUserIdentifier());
+		}
+		if (log.isTraceEnabled()) {
+			log.trace("canAccess user:" + user);
+		}
+
+		List<String> userRoles = user.get().getUserRoles().stream().map(ur -> ur.getName()).collect(Collectors.toList());
+		Set<UserActionDTO> userActions = getAllActionsForRoles(userRoles);
+		
+		if (log.isDebugEnabled()) {
+			log.debug("canAccess user roles:" + Arrays.asList(userRoles) + " User actions size:" + userActions.size());
+		}
+		return checkAccess(userActions, action, entity);
 	}
 
 	@Override
-	public Set<UserActionDTO> getAllActionsForRoles(List<String> roleList, String modelName, String actionName,
-													 String userName) throws AbstractNotabaristaException {
+	public Set<UserActionDTO> getAllActionsForRoles(List<String> roleList) throws AbstractNotabaristaException {
 		Set<UserActionDTO> userActions = new HashSet<>();
 
 		roleList.forEach(role -> {
@@ -52,41 +78,29 @@ public class UserAccessService implements IUserAccessService {
 		return userActions;
 	}
 	
-	private <T> Boolean checkAccess(String userIdentifier, String actionName, String action, Class<T> clazz)
+	private <T> Boolean checkAccess(Set<UserActionDTO> userActions, String action, Class<T> entity)
 			throws AbstractNotabaristaException {
 
-		Optional<UserDTO> user = usersService.findByUserIdentifier(userIdentifier);
-		
-		if (!user.isPresent()) {
-			user = Optional.of(processNewUser(userIdentifier));
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("User identifier:" + userIdentifier);
-		}
-
-		List<String> userRoles = user.get().getUserRoles().stream().map(ur -> ur.getName()).collect(Collectors.toList());
-		Set<UserActionDTO> userActions = getAllActionsForRoles(userRoles, clazz.getSimpleName().toLowerCase(), actionName,
-				user.get().getUsername());
-		if (log.isDebugEnabled()) {
-			log.debug("User actions:" + Arrays.asList(userActions));
-		}
-
-//		find first based on searched actionName AND action -> then it has access
-		Optional<UserActionDTO> foundUserAction = userActions.parallelStream().filter(ua -> ua.getName().equals(actionName) && ua.getAction().equals(action)).findAny();
+//		find first based on searched action AND entity -> then it has access
+		Optional<UserActionDTO> foundUserAction = userActions.parallelStream()
+				.filter(ua -> ua.getAction().equals(action) && ua.getEntityName().equals(entity.getSimpleName().toLowerCase()))
+				.findAny();
 
 		if (!foundUserAction.isPresent()) {
 			log.warn("Insufficient rights to execute.");
 			return false;
 		}
 
+		if (log.isTraceEnabled()) {
+			log.trace("checkAccess: true");
+		}
 		return true;
 	}
 
 	private UserDTO processNewUser(String userIdentifier) throws AbstractNotabaristaException {
-		log.info("Processing new user id: '" + userIdentifier + "'");
+		log.warn("Processing new user with identifier: '" + userIdentifier + "'");
 
-		// get user info from Okta
+		// getting user info from Okta
 		User userInfo = client.getUser(userIdentifier);
 
 		// TODO add required default data to new user
@@ -96,7 +110,7 @@ public class UserAccessService implements IUserAccessService {
 								 .firstName(userInfo.getProfile().getFirstName())
 								 .lastName(userInfo.getProfile().getLastName())
 								 .username(userInfo.getProfile().getEmail())
-								 .userProfile(null)
+//								 .userProfile(createDefaultUserProfile())
 								 .userRoles(getDefaultRoles())
 								 .createdAt(Date.from(Instant.now()))
 								 .modifiedAt(Date.from(Instant.now()))
@@ -107,24 +121,30 @@ public class UserAccessService implements IUserAccessService {
 		try {
 			user = usersService.insert(userDTO);
 		} catch (Exception e) {
-			throw new AbstractNotabaristaException("Error creating new user: " + e.getMessage());
+			throw new AbstractNotabaristaException("Error creating new user: " + e);
 		}
 
-		log.info("Processed new user id: '" + userIdentifier + "': " + user);
-
+		if(log.isInfoEnabled()) {
+			log.info("Added new user: " + user);
+		}
 		return user;
 	}
 
 	private List<UserRoleDTO> getDefaultRoles() {
-		// TODO is this enough?
 		List<UserRoleDTO> defaultUserRoles = new ArrayList<>();
-		Optional<UserRoleDTO> userRoleDTOOptional = userRoleService.findByName("default");
+		Optional<UserRoleDTO> userRoleDTOOptional = userRoleService.findByName("customer");
 		if (userRoleDTOOptional.isPresent()) {
 			defaultUserRoles.add(userRoleDTOOptional.get());
 		}
-
 		return defaultUserRoles;
 	}
-
+	
+	private UserProfileDTO createDefaultUserProfile() {
+		return UserProfileDTO.builder()
+				.avatar("none")
+				.phoneNumber("N/A")
+				.userProfileData(null)
+				.build();
+	}
 
 }

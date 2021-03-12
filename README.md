@@ -1,2 +1,2 @@
 # be-user-service
-Java Backend User Handling Service
+Backend User Handling Service

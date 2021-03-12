@@ -32,8 +32,8 @@ public class UserController extends AbstractDeleteController<UserEntity, UserDTO
         httpServletResponse.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
     }
 
-    @GetMapping("/details")
-    public ResponseEntity<UserDTO> getUserDetails(@RequestHeader("uid") String userId) {
+    @GetMapping("/current")
+    public ResponseEntity<UserDTO> getCurrentUserDetails(@RequestHeader("uid") String userId) {
         Optional<UserDTO> userDTOOptional = userService.findByUserIdentifier(userId);
 
         if (userDTOOptional.isPresent()) {

@@ -5,10 +5,10 @@ import org.notabarista.entity.NothingEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NothingConverter implements GenericConverter<NothingEntity, NothingDTO> {
+public class NothingConverter implements GenericJPAConverter<NothingEntity, NothingDTO> {
 
 	@Override
-	public NothingEntity createFrom(NothingDTO dto) {
+	public NothingEntity createFromSource(NothingDTO dto) {
 		return NothingEntity.builder().id(dto.getId())
 
 				.name(dto.getName())
@@ -24,7 +24,7 @@ public class NothingConverter implements GenericConverter<NothingEntity, Nothing
 	}
 
 	@Override
-	public NothingDTO createFrom(NothingEntity entity) {
+	public NothingDTO createFromTarget(NothingEntity entity) {
 
 		return NothingDTO.builder()
 				.id(entity.getId())
@@ -42,7 +42,7 @@ public class NothingConverter implements GenericConverter<NothingEntity, Nothing
 	}
 
 	@Override
-	public NothingDTO updateEntity(NothingEntity entity, NothingDTO dto) {
+	public NothingDTO updateSource(NothingEntity entity, NothingDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

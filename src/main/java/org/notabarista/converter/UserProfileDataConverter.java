@@ -5,10 +5,10 @@ import org.notabarista.entity.UserProfileDataEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserProfileDataConverter implements GenericConverter<UserProfileDataEntity, UserProfileDataDTO> {
+public class UserProfileDataConverter implements GenericJPAConverter<UserProfileDataEntity, UserProfileDataDTO> {
 
 	@Override
-	public UserProfileDataEntity createFrom(UserProfileDataDTO dto) {
+	public UserProfileDataEntity createFromSource(UserProfileDataDTO dto) {
 		return UserProfileDataEntity.builder()
 				.id(dto.getId())
 				.key(dto.getKey())
@@ -23,7 +23,7 @@ public class UserProfileDataConverter implements GenericConverter<UserProfileDat
 	}
 
 	@Override
-	public UserProfileDataDTO createFrom(UserProfileDataEntity entity) {
+	public UserProfileDataDTO createFromTarget(UserProfileDataEntity entity) {
 
 		return UserProfileDataDTO.builder()
 				.id(entity.getId())
@@ -39,7 +39,7 @@ public class UserProfileDataConverter implements GenericConverter<UserProfileDat
 	}
 
 	@Override
-	public UserProfileDataDTO updateEntity(UserProfileDataEntity entity, UserProfileDataDTO dto) {
+	public UserProfileDataDTO updateSource(UserProfileDataEntity entity, UserProfileDataDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

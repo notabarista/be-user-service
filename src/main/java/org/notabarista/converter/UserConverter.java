@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
+public class UserConverter implements GenericJPAConverter<UserEntity, UserDTO> {
 
 	@Autowired
 	private UserProfileConverter userProfileConverter;
@@ -15,7 +15,7 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 	private UserRoleConverter userRoleConverter;
 	
 	@Override
-	public UserEntity createFrom(UserDTO dto) {
+	public UserEntity createFromSource(UserDTO dto) {
 		return UserEntity.builder()
 				.id(dto.getId())
 				.userIdentifier(dto.getUserIdentifier())
@@ -24,8 +24,8 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 				.firstName(dto.getFirstName())
 				.lastName(dto.getLastName())
 
-				.userProfile(null != dto.getUserProfile() ? userProfileConverter.createFrom(dto.getUserProfile()) : null)
-				.userRoles(userRoleConverter.createFromDtos(dto.getUserRoles()))
+				.userProfile(null != dto.getUserProfile() ? userProfileConverter.createFromSource(dto.getUserProfile()) : null)
+				.userRoles(userRoleConverter.createFromSources(dto.getUserRoles()))
 
 				.createdAt(dto.getCreatedAt())
 				.createdBy(dto.getCreatedBy())
@@ -36,7 +36,7 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 	}
 
 	@Override
-	public UserDTO createFrom(UserEntity entity) {
+	public UserDTO createFromTarget(UserEntity entity) {
 
 		return UserDTO.builder()
 				.id(entity.getId())
@@ -46,8 +46,8 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 				.firstName(entity.getFirstName())
 				.lastName(entity.getLastName())
 				
-				.userProfile(null != entity.getUserProfile() ? userProfileConverter.createFrom(entity.getUserProfile()) : null)
-				.userRoles(userRoleConverter.createFromEntities(entity.getUserRoles()))
+				.userProfile(null != entity.getUserProfile() ? userProfileConverter.createFromTarget(entity.getUserProfile()) : null)
+				.userRoles(userRoleConverter.createFromTargets(entity.getUserRoles()))
 				
 				.createdAt(entity.getCreatedAt())
 				.createdBy(entity.getCreatedBy())
@@ -58,7 +58,7 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO> {
 	}
 
 	@Override
-	public UserDTO updateEntity(UserEntity entity, UserDTO dto) {
+	public UserDTO updateSource(UserEntity entity, UserDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

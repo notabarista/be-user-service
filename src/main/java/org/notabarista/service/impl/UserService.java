@@ -45,7 +45,7 @@ public class UserService extends AbstractDeleteService<UserEntity, UserDTO> impl
 		
 		UserDTO userDto = null;
 		if (userEntityOpt.isPresent()) {
-			userDto = userConverter.createFrom(userEntityOpt.get());
+			userDto = userConverter.createFromTarget(userEntityOpt.get());
 		}
 		
 		return Optional.ofNullable(userDto);

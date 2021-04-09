@@ -5,10 +5,10 @@ import org.notabarista.entity.UserActionEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserActionConverter implements GenericConverter<UserActionEntity, UserActionDTO> {
+public class UserActionConverter implements GenericJPAConverter<UserActionEntity, UserActionDTO> {
 
 	@Override
-	public UserActionEntity createFrom(UserActionDTO dto) {
+	public UserActionEntity createFromSource(UserActionDTO dto) {
 		return UserActionEntity.builder()
 				.id(dto.getId())
 				.name(dto.getName())
@@ -27,7 +27,7 @@ public class UserActionConverter implements GenericConverter<UserActionEntity, U
 	}
 
 	@Override
-	public UserActionDTO createFrom(UserActionEntity entity) {
+	public UserActionDTO createFromTarget(UserActionEntity entity) {
 
 		return UserActionDTO.builder()
 				.id(entity.getId())
@@ -47,7 +47,7 @@ public class UserActionConverter implements GenericConverter<UserActionEntity, U
 	}
 
 	@Override
-	public UserActionDTO updateEntity(UserActionEntity entity, UserActionDTO dto) {
+	public UserActionDTO updateSource(UserActionEntity entity, UserActionDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserRoleConverter implements GenericConverter<UserRoleEntity, UserRoleDTO> {
+public class UserRoleConverter implements GenericJPAConverter<UserRoleEntity, UserRoleDTO> {
 
 	@Autowired
 	private UserActionConverter userActionConverter;
 	
 	@Override
-	public UserRoleEntity createFrom(UserRoleDTO dto) {
+	public UserRoleEntity createFromSource(UserRoleDTO dto) {
 		return UserRoleEntity.builder()
 				.id(dto.getId())
 				.name(dto.getName())
 				.description(dto.getDescription())
-				.userActions(userActionConverter.createFromDtos(dto.getUserActions()))
+				.userActions(userActionConverter.createFromSources(dto.getUserActions()))
 				
 				.createdAt(dto.getCreatedAt())
 				.createdBy(dto.getCreatedBy())
@@ -28,13 +28,13 @@ public class UserRoleConverter implements GenericConverter<UserRoleEntity, UserR
 	}
 
 	@Override
-	public UserRoleDTO createFrom(UserRoleEntity entity) {
+	public UserRoleDTO createFromTarget(UserRoleEntity entity) {
 
 		return UserRoleDTO.builder()
 				.id(entity.getId())
 				.name(entity.getName())
 				.description(entity.getDescription())
-				.userActions(userActionConverter.createFromEntities(entity.getUserActions()))
+				.userActions(userActionConverter.createFromTargets(entity.getUserActions()))
 				
 				.createdAt(entity.getCreatedAt())
 				.createdBy(entity.getCreatedBy())
@@ -45,7 +45,7 @@ public class UserRoleConverter implements GenericConverter<UserRoleEntity, UserR
 	}
 
 	@Override
-	public UserRoleDTO updateEntity(UserRoleEntity entity, UserRoleDTO dto) {
+	public UserRoleDTO updateSource(UserRoleEntity entity, UserRoleDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

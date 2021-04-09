@@ -25,7 +25,7 @@ public class UserRoleService extends AbstractDeleteService<UserRoleEntity, UserR
         UserRoleDTO userRoleDTO = null;
         Optional<UserRoleEntity> userRoleEntityOptional = userRoleRepository.findByName(name);
         if (userRoleEntityOptional.isPresent()) {
-            userRoleDTO = userRoleConverter.createFrom(userRoleEntityOptional.get());
+            userRoleDTO = userRoleConverter.createFromTarget(userRoleEntityOptional.get());
         }
 
         return Optional.ofNullable(userRoleDTO);

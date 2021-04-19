@@ -16,6 +16,19 @@
 	<name>user-management-service</name>
 	<description>User management service</description>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <id>github</id>
+      <name>Notabarista common</name>
+      <url>https://maven.pkg.github.com/notabarista/be-common</url>
+    </repository>
+  </repositories>
+
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
@@ -69,5 +82,13 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Notabarista Github Packages</name>
+            <url>https://maven.pkg.github.com/notabarista/be-user-service</url>
+        </repository>
+    </distributionManagement>
 
 </project>

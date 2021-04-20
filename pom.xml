@@ -16,10 +16,25 @@
 	<name>user-management-service</name>
 	<description>User management service</description>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <id>github</id>
+      <name>Notabarista common</name>
+      <url>https://maven.pkg.github.com/notabarista/be-common</url>
+    </repository>
+  </repositories>
+
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<spring-boot-admin.version>2.2.4</spring-boot-admin.version>
+		<rest.assured.version>4.1.2</rest.assured.version>
+    	<h2.version>1.4.200</h2.version>
 	</properties>
 
 	<dependencies>
@@ -38,6 +53,31 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${rest.assured.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${rest.assured.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>xml-path</artifactId>
+			<version>${rest.assured.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -69,5 +109,13 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Notabarista Github Packages</name>
+            <url>https://maven.pkg.github.com/notabarista/be-user-service</url>
+        </repository>
+    </distributionManagement>
 
 </project>

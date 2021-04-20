@@ -1,8 +1,10 @@
 package org.notabarista.service.impl;
 
-import com.okta.sdk.client.Client;
-import com.okta.sdk.resource.user.User;
-import lombok.extern.log4j.Log4j2;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.notabarista.converter.UserConverter;
 import org.notabarista.dto.UserDTO;
 import org.notabarista.dto.UserProfileDTO;
@@ -16,11 +18,10 @@ import org.notabarista.service.abstr.impl.AbstractDeleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import com.okta.sdk.client.Client;
+import com.okta.sdk.resource.user.User;
+
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
@@ -72,8 +73,8 @@ public class UserService extends AbstractDeleteService<UserEntity, UserDTO> impl
 					.username(userInfo.getProfile().getEmail())
 					//								 .userProfile(createDefaultUserProfile())
 					.userRoles(getDefaultRoles())
-					.createdAt(Date.from(Instant.now()))
-					.modifiedAt(Date.from(Instant.now()))
+					.createdAt(LocalDateTime.now())
+					.modifiedAt(LocalDateTime.now())
 					.createdBy("system")
 					.modifiedBy("system")
 					.build();

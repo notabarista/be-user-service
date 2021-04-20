@@ -23,4 +23,9 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
     password:
+    
+okta:
+  client:
+    orgUrl: https://dev-3875453.okta.com
+    token: noToken
 

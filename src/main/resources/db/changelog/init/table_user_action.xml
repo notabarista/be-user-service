@@ -30,10 +30,10 @@
 			<column name="action" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
-			<column name="entity_name" type="VARCHAR(255)">
+			<column name="resource" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
-			<column name="description" type="text" />
+			<column name="description" type="VARCHAR(255)" />
 
 			<column name="created_at" type="datetime">
 				<constraints nullable="false" />
@@ -53,26 +53,15 @@
 		</createTable>
 	</changeSet>
 	
-	<changeSet author="tudor.codrea" id="add_user_action_service_action_entity_uk">
+	<changeSet author="tudor.codrea" id="add_user_action_service_action_resource_uk">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<indexExists indexName="user_action_service_action_entity_uk" />
+				<indexExists indexName="user_action_service_action_resource_uk" />
 			</not>
 		</preConditions>
 		<addUniqueConstraint
-			constraintName="user_action_service_action_entity_uk" tableName="user_action"
-			columnNames="service_name,action,entity_name" />
-	</changeSet>
-
-	<changeSet author="tudor.codrea" id="add_user_action_path_action_uk">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<indexExists indexName="user_action_path_action_uk" />
-			</not>
-		</preConditions>
-		<addUniqueConstraint
-			constraintName="user_action_path_action_uk" tableName="user_action"
-			columnNames="path,action" />
+			constraintName="user_action_service_action_resource_uk" tableName="user_action"
+			columnNames="service_name,action,resource" />
 	</changeSet>
 
 </databaseChangeLog>

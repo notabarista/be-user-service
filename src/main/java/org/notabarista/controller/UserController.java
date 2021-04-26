@@ -27,7 +27,6 @@ public class UserController extends AbstractDeleteController<UserEntity, UserDTO
     public void register(@RequestHeader("uid") String userId, HttpServletResponse httpServletResponse) throws AbstractNotabaristaException {
         userService.processUser(userId);
 
-        // TODO is this the best way to redirect from service URL to gateway URL?
         httpServletResponse.setHeader("Location", "/");
         httpServletResponse.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
     }

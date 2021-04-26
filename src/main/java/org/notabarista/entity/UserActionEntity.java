@@ -40,8 +40,8 @@ public class UserActionEntity extends AbstractAuditedEntity {
 	@Column(name = "action")
 	private String action;
 	
-	@Column(name = "entity_name")
-	private String entityName;
+	@Column(name = "resource")
+	private String resource;
 	
 	@Column(name = "description")
 	private String description;

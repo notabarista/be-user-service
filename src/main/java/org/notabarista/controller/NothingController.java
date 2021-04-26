@@ -6,12 +6,13 @@ import java.util.Map;
 import org.apache.commons.lang3.time.StopWatch;
 import org.notabarista.controller.abstr.AbstractDeleteController;
 import org.notabarista.dto.NothingDTO;
+import org.notabarista.entity.CanAccessDetails;
 import org.notabarista.entity.NothingEntity;
 import org.notabarista.entity.response.Response;
 import org.notabarista.entity.response.ResponseStatus;
 import org.notabarista.exception.AbstractNotabaristaException;
-import org.notabarista.exception.InsufficientRightsException;
 import org.notabarista.service.IUserAccessService;
+import org.notabarista.service.util.enums.MicroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,15 +81,16 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
 		watch.start();
 		log.info("getSpecial uid: " + userId);
 
-		if (!userAccessService.canAccess(userId, "special", NothingEntity.class)) {
-			watch.stop();
-			return new ResponseEntity<>(new Response<String>(ResponseStatus.SUCCESS, watch.getTime(), null, 0, 0, 0, 0,
-					new InsufficientRightsException().getMessage()), HttpStatus.FORBIDDEN);
-		}
-
+		userAccessService.checkAccess(CanAccessDetails.builder()
+				.uid(userId)
+				.action("special")
+				.resource(this.getClass().getSimpleName())
+				.microserviceName(MicroService.USER_MANAGEMENT_SERVICE.getMicroserviceName())
+				.build());
+		
 		watch.stop();
 		return new ResponseEntity<>(new Response<String>(ResponseStatus.SUCCESS, watch.getTime(),
 				Arrays.asList("Special content"), 0, 0, 0, 0, ""), HttpStatus.OK);
 	}
-
+	
 }

@@ -15,7 +15,7 @@ public class UserActionConverter implements GenericJPAConverter<UserActionEntity
 				.serviceName(dto.getServiceName())
 				.path(dto.getPath())
 				.action(dto.getAction())
-				.entityName(dto.getEntityName())
+				.resource(dto.getResource())
 				.description(dto.getDescription())
 				
 				.createdAt(dto.getCreatedAt())
@@ -35,7 +35,7 @@ public class UserActionConverter implements GenericJPAConverter<UserActionEntity
 				.serviceName(entity.getServiceName())
 				.path(entity.getPath())
 				.action(entity.getAction())
-				.entityName(entity.getEntityName())
+				.resource(entity.getResource())
 				.description(entity.getDescription())
 				
 				.createdAt(entity.getCreatedAt())

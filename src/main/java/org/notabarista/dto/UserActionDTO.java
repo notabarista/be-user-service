@@ -23,7 +23,7 @@ public class UserActionDTO extends AbstractAuditedDTO {
 	private String serviceName;
 	private String path;
 	private String action;
-	private String entityName;
+	private String resource;
 	private String description;
 	
 }

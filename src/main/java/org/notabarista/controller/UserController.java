@@ -5,6 +5,7 @@ import org.notabarista.dto.UserDTO;
 import org.notabarista.entity.UserEntity;
 import org.notabarista.exception.AbstractNotabaristaException;
 import org.notabarista.service.IUserService;
+import org.notabarista.util.NABConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class UserController extends AbstractDeleteController<UserEntity, UserDTO
     private IUserService userService;
 
     @GetMapping("/register")
-    public void register(@RequestHeader("uid") String userId, HttpServletResponse httpServletResponse) throws AbstractNotabaristaException {
+    public void register(@RequestHeader(NABConstants.UID_HEADER_NAME) String userId, HttpServletResponse httpServletResponse) throws AbstractNotabaristaException {
         userService.processUser(userId);
 
         httpServletResponse.setHeader("Location", "/");
@@ -32,7 +33,7 @@ public class UserController extends AbstractDeleteController<UserEntity, UserDTO
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDTO> getCurrentUserDetails(@RequestHeader("uid") String userId) {
+    public ResponseEntity<UserDTO> getCurrentUserDetails(@RequestHeader(NABConstants.UID_HEADER_NAME) String userId) {
         Optional<UserDTO> userDTOOptional = userService.findByUserIdentifier(userId);
 
         if (userDTOOptional.isPresent()) {

@@ -1,8 +1,8 @@
 package org.notabarista.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
+import com.okta.sdk.client.Client;
+import com.okta.sdk.resource.user.User;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.time.StopWatch;
 import org.notabarista.controller.abstr.AbstractDeleteController;
 import org.notabarista.dto.NothingDTO;
@@ -13,6 +13,7 @@ import org.notabarista.entity.response.ResponseStatus;
 import org.notabarista.exception.AbstractNotabaristaException;
 import org.notabarista.service.IUserAccessService;
 import org.notabarista.service.util.enums.MicroService;
+import org.notabarista.util.NABConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.okta.sdk.client.Client;
-import com.okta.sdk.resource.user.User;
-
-import lombok.extern.log4j.Log4j2;
+import java.util.Arrays;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -49,7 +48,7 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
 	}
 
 	@GetMapping("/test-okta-user")
-	public String testOktaHeader(@RequestHeader("uid") String userId) {
+	public String testOktaHeader(@RequestHeader(NABConstants.UID_HEADER_NAME) String userId) {
 		User user = client.getUser(userId);
 		StringBuilder sb = new StringBuilder();
 		if (user != null) {
@@ -74,7 +73,7 @@ public class NothingController extends AbstractDeleteController<NothingEntity, N
 	}
 
 	@GetMapping("/special")
-	public ResponseEntity<Response<String>> getSpecial(@RequestHeader("uid") String userId)
+	public ResponseEntity<Response<String>> getSpecial(@RequestHeader(NABConstants.UID_HEADER_NAME) String userId)
 			throws AbstractNotabaristaException {
 
 		StopWatch watch = new StopWatch();

@@ -1,0 +1,90 @@
+server:
+  port: 8083
+  
+spring:  
+  output:
+    ansi:
+      enabled: DETECT  
+  data:
+    web:
+      pageable:
+        max-page-size: 100000
+        default-page-size: 100000   
+  mvc:
+    log-request-details: true
+  main:
+    allow-bean-definition-overriding: true                       
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/changelog-master.xml
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    hikari:
+      maximum-pool-size: 3
+  jpa:
+    show-sql: false
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: ${DEFAULT_SCHEMA}
+        format_sql: true
+        enable_lazy_load_no_trans: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    
+okta:
+  client:
+    orgUrl: ${OKTA_ORG_URL}
+    token: ${OKTA_TOKEN}
+    
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    fetchRegistry: true
+    healthcheck:
+      enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${random.int}    
+
+ribbon:
+  http:
+    client:
+      enabled: true
+  https:
+    client:
+      enabled: true      
+        
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'
+  endpoint:
+    logfile:
+      external_file: /var/log/${spring.application.name}.log
+              
+logging.file: /var/log/${spring.application.name}.log              
+logging:
+  file: 
+    max-size: 10MB  
+    max-history: 2    
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+    file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+  level:
+    root: info
+    org.springframework: warn
+    org.hibernate: info
+    org.notabarista: info
+    
+    #    logger.com.netflix.*: warn
+      

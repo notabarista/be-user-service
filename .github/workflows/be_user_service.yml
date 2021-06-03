@@ -43,10 +43,22 @@ jobs:
          architecture: x64
 
       - name: Build with maven
-        run: mvn dependency:tree clean install
+        run: mvn clean install
         env:
           GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
       - name: Deploy artifacts
         run: mvn -batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
+          
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
+      - name: Build spring docker image with maven
+        run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=notabarista/be-user-service
+     
+      - name: Docker pushing the latest image
+        run: docker image push notabarista/be-user-service:latest
